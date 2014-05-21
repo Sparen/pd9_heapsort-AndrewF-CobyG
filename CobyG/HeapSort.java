@@ -15,17 +15,48 @@ import java.util.*;
 
 public class HeapSort{
 
-    public static Integer[] sort( Integer[] data ){
-
-	ALHeap heap = new ALHeap(); // to be filled in order
-	Integer[] ret = new Integer[data.length]; // will be filled with sorted data from the heap
-	for (Integer i : data)
-	    heap.add(i); // fill heap up (in order) in linear time
-	for (int i = 0; i < data.length; i++)
-	    ret[i] = heap.removeMin(); // add each lowest value, removing it from the heap
+    public static int[] sort( int[] data ){
+	int[] retPrep = new int[data.length];
+	int[] ret = new int[data.length];
+	for (int i = 0; i < data.length; i++){
+		retPrep[i] = data[i];
+		int pos = i;
+		while (pos > 0){
+			int parentPos = (pos-1)/2;
+			if (retPrep[pos] < retPrep[parentPos]){
+				int temp = ret[parentPos];
+				retPrep[parentPos] = retPrep[pos];
+				retPrep[pos] = temp;
+				pos = parentPos;
+			}
+			else
+				break;
+		}
+	}
+	for (int i = 0; i < data.length; i++){
+		int minVal = retPrep[0];
+		int ender = retPrep[data.length - i - 1];
+		ret[i] = minVal;
+		retPrep[0] = ender;
+		retPrep[data.length - i - 1] = null;
+		int pos = 0;
+		int minChild;
+		while (pos < data.length - i - 1){
+			minChild = mindChildPos(pos);
+			if (minChild == -1)
+				break;
+			else if (ender.compareTo(retPrep[minChild]) <= 0)
+				break;
+			else{
+				int temp = retPrep[minChild];
+				retPrep[minChild] = retPrep[pos];
+				retPrep[pos] = temp;
+				pos = minChild;
+			}
+		}
+	}
 	return ret;
     }//O(nlogn)
-
 
     public static void main(String[] args) {
 	Integer[] tester = {8, 5, 2, 12, 3, 5, 10, 11, 6};
