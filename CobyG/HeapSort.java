@@ -42,10 +42,17 @@ public class HeapSort{
 		int pos = 0;
 		int minChild;
 		while (pos < data.length - i - 1){
-			minChild = mindChildPos(pos);
-			if (minChild == -1)
+			int lc = pos*2 + 1;
+			int rc = pos*2 + 2;
+			if (lc > data.length - i - 1)
 				break;
-			else if (ender.compareTo(retPrep[minChild]) <= 0)
+			else if (rc > data.length - i - 1)
+				minChildPos = lc;
+			else if (retPrep[lc].compareTo(retPrep[rc]) < 0)
+				minChildPos = lc;
+			else
+				minChildPos = rc;
+			if (ender.compareTo(retPrep[minChild]) <= 0)
 				break;
 			else{
 				int temp = retPrep[minChild];
@@ -59,14 +66,14 @@ public class HeapSort{
     }//O(nlogn)
 
     public static void main(String[] args) {
-	Integer[] tester = {8, 5, 2, 12, 3, 5, 10, 11, 6};
+	int[] tester = {8, 5, 2, 12, 3, 5, 10, 11, 6};
 	System.out.print("Input: ");
-	for (Integer i : tester)
+	for (int i : tester)
 	    System.out.print(i + ",");
 	System.out.println();
-	Integer[] printer = sort(tester);
+	int[] printer = sort(tester);
 	System.out.print("Sorted result: ");
-	for (Integer i : printer)
+	for (int i : printer)
 	    System.out.print(i + ",");
     }
 
